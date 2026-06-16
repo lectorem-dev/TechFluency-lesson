@@ -4,6 +4,7 @@ import { RoleRedirect } from '../features/auth/ui/RoleRedirect'
 import { AdminUsersPage } from '../pages/admin/AdminUsersPage'
 import { HomePage } from '../pages/home/HomePage'
 import { LoginPage } from '../pages/login/LoginPage'
+import { CourseCompletedPage } from '../pages/student/CourseCompletedPage'
 import { LessonPage } from '../pages/student/LessonPage'
 import { StudentDashboardPage } from '../pages/student/StudentDashboardPage'
 
@@ -37,6 +38,14 @@ export const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <LessonPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/student/completed',
+    element: (
+      <ProtectedRoute>
+        <CourseCompletedPage />
       </ProtectedRoute>
     ),
   },

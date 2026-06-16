@@ -1,10 +1,12 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { getCourse, getLessons } from '../../features/course/api/courseApi'
+import { useNavigate } from 'react-router-dom'
+import { getCourse, getLessons, getProgress } from '../../features/course/api/courseApi'
 import type { CourseSummary, LessonListItem } from '../../features/course/model/courseTypes'
 import { CourseProgressBar } from '../../features/course/ui/CourseProgressBar'
 import { LessonList } from '../../features/course/ui/LessonList'
 import { getAuthUser } from '../../features/auth/model/authStorage'
+import { Button } from '../../shared/ui/Button'
 import { PageLayout } from '../../shared/ui/PageLayout'
 
 function getErrorMessage(error: unknown) {
@@ -19,20 +21,23 @@ function getErrorMessage(error: unknown) {
 }
 
 export function StudentDashboardPage() {
+  const navigate = useNavigate()
   const user = getAuthUser()
   const [course, setCourse] = useState<CourseSummary | null>(null)
   const [lessons, setLessons] = useState<LessonListItem[]>([])
+  const [courseCompleted, setCourseCompleted] = useState(false)
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     let isMounted = true
 
-    Promise.all([getCourse(), getLessons()])
-      .then(([loadedCourse, loadedLessons]) => {
+    Promise.all([getCourse(), getLessons(), getProgress()])
+      .then(([loadedCourse, loadedLessons, loadedProgress]) => {
         if (isMounted) {
           setCourse(loadedCourse)
           setLessons(loadedLessons)
+          setCourseCompleted(loadedProgress.courseCompleted)
           setError('')
         }
       })
@@ -70,6 +75,15 @@ export function StudentDashboardPage() {
             progressPercent={course.progressPercent}
             totalLessons={course.totalLessons}
           />
+
+          {courseCompleted ? (
+            <section className="certificate-callout">
+              <p>Курс завершен — можно скачать сертификат.</p>
+              <Button onClick={() => navigate('/student/completed')} type="button">
+                Сертификат
+              </Button>
+            </section>
+          ) : null}
 
           <LessonList lessons={lessons} />
         </div>

@@ -16,6 +16,11 @@ export function TestResult({ onRetry, result }: TestResultProps) {
         <p>Тест пройден. Ваш результат: {result.scorePercent}%.</p>
         {result.courseCompleted ? <p>Курс завершен.</p> : null}
         <div className="form-actions">
+          {result.courseCompleted ? (
+            <Button onClick={() => navigate('/student/completed')} type="button">
+              Перейти на страницу завершения курса
+            </Button>
+          ) : null}
           {result.nextLessonId !== null ? (
             <Button onClick={() => navigate(`/student/lessons/${result.nextLessonId}`)} type="button">
               Перейти к следующему уроку
