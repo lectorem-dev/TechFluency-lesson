@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from enum import Enum
-from typing import Sequence
+from typing import Optional, Sequence
 
 
 class ErrorCode(str, Enum):
@@ -23,7 +25,7 @@ class AppException(Exception):
         status_code: int,
         code: ErrorCode,
         message: str,
-        details: Sequence[str] | None = None,
+        details: Optional[Sequence[str]] = None,
     ) -> None:
         self.status_code = status_code
         self.code = code

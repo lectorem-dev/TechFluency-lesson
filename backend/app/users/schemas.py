@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from datetime import datetime
+from typing import Optional
 from uuid import UUID
 
 from pydantic import Field, field_validator
@@ -34,7 +37,7 @@ class UserCreateRequest(ApiModel):
 class UserUpdateRequest(ApiModel):
     name: str = Field(min_length=1, description="Имя пользователя", examples=["Иван Иванов"])
     login: str = Field(min_length=1, description="Логин пользователя", examples=["student"])
-    password: str | None = Field(default=None, description="Новый пароль пользователя. Можно не передавать, чтобы оставить старый")
+    password: Optional[str] = Field(default=None, description="Новый пароль пользователя. Можно не передавать, чтобы оставить старый")
     role: UserRole = Field(description="Роль пользователя: ADMIN или STUDENT", examples=["STUDENT"])
     status: UserStatus = Field(description="Статус пользователя: ACTIVE или ARCHIVED", examples=["ACTIVE"])
 

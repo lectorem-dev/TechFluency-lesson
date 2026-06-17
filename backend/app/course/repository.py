@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import select
@@ -9,7 +12,7 @@ from app.course.models import Course, Lesson, LessonPassRule, TestAnswer, TestQu
 COURSE_TITLE = "Основной курс"
 
 
-def get_main_course(db: Session) -> Course | None:
+def get_main_course(db: Session) -> Optional[Course]:
     return db.scalar(select(Course).where(Course.title == COURSE_TITLE))
 
 
@@ -36,5 +39,5 @@ def get_answers_for_questions(db: Session, question_ids: list[UUID]) -> dict[UUI
     return answers_by_question_id
 
 
-def get_pass_rule(db: Session, lesson_id: UUID) -> LessonPassRule | None:
+def get_pass_rule(db: Session, lesson_id: UUID) -> Optional[LessonPassRule]:
     return db.scalar(select(LessonPassRule).where(LessonPassRule.lesson_id == lesson_id))

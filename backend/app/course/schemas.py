@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from enum import Enum
+from typing import Optional
 from uuid import UUID
 
 from pydantic import Field
@@ -15,7 +18,7 @@ class LessonStatus(str, Enum):
 class CourseResponse(ApiModel):
     id: UUID = Field(description="Идентификатор курса", examples=["550e8400-e29b-41d4-a716-446655440000"])
     title: str = Field(description="Название курса", examples=["Основной курс"])
-    description: str | None = Field(description="Описание курса", examples=["Единый курс MVP платформы"])
+    description: Optional[str] = Field(description="Описание курса", examples=["Единый курс MVP платформы"])
     progress_percent: int = Field(alias="progressPercent", description="Процент прохождения курса", examples=[33])
     completed_lessons: int = Field(alias="completedLessons", description="Количество пройденных уроков", examples=[1])
     total_lessons: int = Field(alias="totalLessons", description="Общее количество уроков", examples=[3])
@@ -27,7 +30,7 @@ class LessonListItemResponse(ApiModel):
     title: str = Field(description="Название урока", examples=["Урок 2"])
     status: LessonStatus = Field(description="Статус урока", examples=["AVAILABLE"])
     locked: bool = Field(description="Признак блокировки урока", examples=[False])
-    best_score_percent: int | None = Field(alias="bestScorePercent", description="Лучший результат по тесту в процентах", examples=[100])
+    best_score_percent: Optional[int] = Field(alias="bestScorePercent", description="Лучший результат по тесту в процентах", examples=[100])
 
 
 class TestAnswerResponse(ApiModel):
@@ -67,5 +70,5 @@ class LessonSubmitResponse(ApiModel):
     passed: bool = Field(description="Признак успешного прохождения теста", examples=[True])
     score_percent: int = Field(alias="scorePercent", description="Результат теста в процентах", examples=[100])
     pass_percent: int = Field(alias="passPercent", description="Минимальный процент для прохождения", examples=[70])
-    next_lesson_id: UUID | None = Field(alias="nextLessonId", description="Идентификатор следующего урока, если тест пройден")
+    next_lesson_id: Optional[UUID] = Field(alias="nextLessonId", description="Идентификатор следующего урока, если тест пройден")
     course_completed: bool = Field(alias="courseCompleted", description="Признак завершения всего курса", examples=[False])

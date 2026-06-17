@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 from collections.abc import Callable
 from datetime import datetime, timedelta
+from typing import Optional
 import uuid
 
 from fastapi import Depends
@@ -57,10 +60,10 @@ def parse_access_token(token: str) -> dict[str, str]:
 
 
 def get_current_user(
-    credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(bearer_scheme),
     db: Session = Depends(get_db),
 ) -> User:
-    # FastAPI-зависимость заменяет Spring Security filter: достает Bearer JWT и загружает активного пользователя.
+    # FastAPI-зависимость достает Bearer JWT и загружает активного пользователя для защищенных endpoint'ов.
     if credentials is None or credentials.scheme.lower() != "bearer":
         raise AuthRequiredException()
 

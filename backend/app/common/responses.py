@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Any
+from typing import Any, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -22,7 +24,7 @@ class ErrorResponse(ApiModel):
     details: list[str] = Field(default_factory=list, description="Дополнительные детали ошибки")
 
 
-def error_response(status: int, code: ErrorCode, message: str, details: list[str] | None = None) -> dict[str, Any]:
+def error_response(status: int, code: ErrorCode, message: str, details: Optional[list[str]] = None) -> dict[str, Any]:
     return ErrorResponse(
         timestamp=datetime.now(),
         status=status,

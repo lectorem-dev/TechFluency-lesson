@@ -1,3 +1,4 @@
+from typing import Union
 from uuid import UUID
 
 from sqlalchemy.orm import Session
@@ -83,5 +84,5 @@ def seed_admin(db: Session) -> None:
     admin.status = UserStatus.ACTIVE.value
 
 
-def to_enum_value(value: UserRole | UserStatus | str) -> str:
+def to_enum_value(value: Union[UserRole, UserStatus, str]) -> str:
     return value.value if hasattr(value, "value") else value

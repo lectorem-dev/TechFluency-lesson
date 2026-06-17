@@ -1,6 +1,9 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 import json
 from pathlib import Path
+from typing import Optional
 
 from pydantic import BaseModel, Field, ValidationError
 from sqlalchemy import delete, select
@@ -33,7 +36,7 @@ class TestQuestionFile(BaseModel):
 
 
 class TestFile(BaseModel):
-    title: str | None = Field(default=None, description="Название теста из файла контента")
+    title: Optional[str] = Field(default=None, description="Название теста из файла контента")
     pass_percent: int = Field(alias="passPercent", ge=1, le=100, description="Минимальный процент для прохождения теста")
     questions: list[TestQuestionFile] = Field(min_length=1, description="Вопросы теста")
 

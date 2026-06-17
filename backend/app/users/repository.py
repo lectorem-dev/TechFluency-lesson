@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import select
@@ -14,11 +17,11 @@ def get_users(db: Session) -> list[User]:
     return list(db.scalars(select(User).order_by(User.created_at.asc())))
 
 
-def get_user_by_id(db: Session, user_id: UUID) -> User | None:
+def get_user_by_id(db: Session, user_id: UUID) -> Optional[User]:
     return db.get(User, user_id)
 
 
-def get_user_by_login(db: Session, login: str) -> User | None:
+def get_user_by_login(db: Session, login: str) -> Optional[User]:
     return db.scalar(select(User).where(User.login == login))
 
 

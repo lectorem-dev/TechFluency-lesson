@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+from typing import Optional
 from uuid import UUID
 
 from sqlalchemy import func, select
@@ -19,7 +22,7 @@ def get_progress_by_lesson_id(db: Session, user_id: UUID, lesson_ids: list[UUID]
     return {progress.lesson_id: progress for progress in progress_items}
 
 
-def get_progress_for_lesson(db: Session, user_id: UUID, lesson_id: UUID) -> LessonProgress | None:
+def get_progress_for_lesson(db: Session, user_id: UUID, lesson_id: UUID) -> Optional[LessonProgress]:
     return db.scalar(
         select(LessonProgress).where(
             LessonProgress.user_id == user_id,

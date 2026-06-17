@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from random import shuffle
+from typing import Optional
 from uuid import UUID
 
 from sqlalchemy.orm import Session
@@ -184,7 +187,7 @@ def save_passed_progress(db: Session, user: User, lesson: Lesson, score_percent:
     db.flush()
 
 
-def get_next_lesson_id(lesson: Lesson, lessons: list[Lesson]) -> UUID | None:
+def get_next_lesson_id(lesson: Lesson, lessons: list[Lesson]) -> Optional[UUID]:
     next_position = lesson.position + 1
     return next((candidate.id for candidate in lessons if candidate.position == next_position), None)
 

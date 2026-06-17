@@ -1,85 +1,81 @@
 # MVP обучающей платформы
 
-### Запуск:
+Веб-платформа для прохождения одного обучающего курса с уроками, тестами, прогрессом, ролями пользователей и
+сертификатом после завершения курса.
 
-Есть два варинта: для демонстрации - фул докер (он так же позволяет не зависить от окружения локальной машины), для
-разработки - в докере запустить бд, а фронт и дев запускать уже локально чтобы быстро вносить изменения без перезапуска
-контейнеров
+Полные документы:
 
-#### full docker:
+- [Техническое задание MVP](./Техническое%20задание%20MVP.md)
+- [Руководство локального запуска](./Руководство%20локального%20запуска.md)
+- [Предложения по развитию](./Предложения%20по%20развитию.md)
 
-````
-cd infra 
+## Стек
+
+- Backend: Python, FastAPI, SQLAlchemy, Alembic, JWT.
+- Frontend: React, TypeScript, Vite.
+- Database: PostgreSQL.
+- Infrastructure: Docker, Docker Compose, nginx для Docker-сборки frontend.
+
+## Быстрый запуск для демонстрации
+
+Вариант поднимает весь проект в Docker: PostgreSQL, backend и frontend.
+
+```powershell
+cd infra
 docker compose up --build
-````
+```
 
-#### dev режим:
+После старта:
 
-Базу данных поднять:
+- Frontend: http://localhost:3000
+- Backend: http://localhost:8080
+- Swagger: http://localhost:8080/docs
+- ReDoc: http://localhost:8080/redoc
 
-````
-cd infra 
-docker compose up postgres
-````
+Демо-пользователь:
 
-Далее фронт:
+```text
+login: admin
+password: secret
+```
 
-````
-cd frontend
-npm install
-npm run dev
-````
+## Разработка
 
-А бек просто из IDE
+Для разработки обычно запускаются:
 
-#### Порты (ссылки)
+- PostgreSQL в Docker через `infra/docker-compose.yml`.
+- Backend локально из `backend`.
+- Frontend локально из `frontend`.
 
-* frontend: http://localhost:3000
-* backend: http://localhost:8080
-* Swagger: http://localhost:8080/swagger-ui/index.html
+Подробные команды для Windows и терминала PyCharm описаны
+в [руководстве локального запуска](./Руководство%20локального%20запуска.md).
 
-## Стек:
+## Структура проекта
 
-- React (Vite)
-- Java (Spring Boot)
-- PostgreSQL
-- Docker
+- `backend/` - FastAPI-приложение, SQLAlchemy-модели, Alembic-миграции, бизнес-логика.
+- `frontend/` - React/Vite-приложение.
+- `content/` - markdown-уроки и JSON-тесты, которые импортируются backend при запуске.
+- `infra/` - Docker Compose и переменные окружения для Docker-сценария.
+- `Руководство локального запуска.md` - пошаговый запуск демо и dev-режима.
+- `Техническое задание MVP.md` - описание требований MVP.
 
-Вспомогательные технологии:
+## Как ориентироваться в коде
 
-- JPA
-- Миграция LiquidBase
-- Dockerfile
-- Docker-compose
+Backend разложен по функциональным зонам:
 
-### Как ориентироваться в коде:
+- `app/auth` - авторизация и JWT.
+- `app/users` - пользователи, роли, администрирование.
+- `app/course` - курс, уроки, тесты, импорт контента.
+- `app/progress` - прогресс прохождения.
+- `app/certificate` - генерация сертификата.
+- `app/core`, `app/common`, `app/db` - конфигурация, ошибки, безопасность и доступ к базе.
 
-**Бекенд** устроен по функциональным блокам (бизнес сущностям): у каждой зоны (`auth`, `course`, `progress`, `user`,
-`certificate`) внутри лежат технические слови `controller`, `service`, `dto`, `entity`, `repository`, а общая
-инфраструктура вынесена в `config`, `security`, `common`; основной поток изменений обычно идет
-`controller -> service -> repository -> entity -> db.migration`.
+Frontend разложен по слоям:
 
-**Фронтенд** тоже разложен по зонам ответственности: маршруты собраны в `src/app/router.tsx`, страницы лежат в
-`src/pages`, бизнес-логика и API по фичам в `src/features/*`, а общие компоненты, HTTP-клиент и конфиг вынесены в
-`src/shared`.
+- `src/app` - корневое приложение и маршрутизация.
+- `src/pages` - страницы.
+- `src/features` - API, модели и UI по доменным фичам.
+- `src/shared` - общий API-клиент, UI-компоненты, стили и конфигурация.
 
-Если нужно быстро понять, где **менять поведение**, идите от входа: на фронте ищите роут в `src/app/router.tsx`, затем
-страницу и вызов `features/*/api`; на бэке ищите `@GetMapping`/`@PostMapping` или путь из Swagger, потом соответствующий
-`service`, используемые `repository` и в конце таблицы/схему в
-`backend/src/main/resources/db.migration/V001__database.sql`.
-
-### Важно:
-
-.../backend/course/importcontent/CourseContentImporter.java - тут хардкод файлов теста и уроков, его нужно поменять при
-интеграции нормальных уроков
-
-### Идеи чем заняться:
-
-1. Сделать нормальную main page с рекламацией как в фигме
-2. Добавить шрифты ВНУТРЬ проекта
-3. Добавить красочный сертификат с бек картинкой
-4. Поправить все формы и переосмыслить расположение md на странице курса
-5. Изменить сущность пользователя так, чтобы он имел учебную группу и в админке сделать группировку по группам и мб
-   выгрузуку людей в таблицу эксель (типа для учителей, но подумать над usecase надо ли это вообще)
-6. Написать тесты
-7. Обернуть проект JavaDoc 
+Если нужно найти обработчик API, начинайте со Swagger: http://localhost:8080/docs. Затем ищите соответствующий router в
+`backend/app/*/router.py`, после него service и repository.
