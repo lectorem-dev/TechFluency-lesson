@@ -29,6 +29,7 @@ public class JwtService {
         Instant now = Instant.now();
         Instant expiresAt = now.plus(properties.getExpiration());
 
+        // В JWT храним минимум данных, которые нужны на каждом запросе без обращения к сессии.
         return Jwts.builder()
                 .subject(user.getLogin())
                 .claims(Map.of(
@@ -44,6 +45,7 @@ public class JwtService {
 
     public JwtUser parseToken(String token) {
         try {
+            // Библиотека одновременно проверяет подпись токена и срок его действия.
             Claims claims = Jwts.parser()
                     .verifyWith(key)
                     .build()

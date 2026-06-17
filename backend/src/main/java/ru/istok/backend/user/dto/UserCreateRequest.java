@@ -1,5 +1,6 @@
 package ru.istok.backend.user.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,17 +13,22 @@ import ru.istok.backend.user.entity.UserRole;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Данные для создания пользователя")
 public class UserCreateRequest {
 
-    @NotBlank
+    @Schema(description = "Имя пользователя", example = "Иван Иванов")
+    @NotBlank(message = "Имя обязательно")
     private String name;
 
-    @NotBlank
+    @Schema(description = "Логин пользователя", example = "student")
+    @NotBlank(message = "Логин обязателен")
     private String login;
 
-    @NotBlank
+    @Schema(description = "Пароль пользователя", example = "secret")
+    @NotBlank(message = "Пароль обязателен")
     private String password;
 
-    @NotNull
+    @Schema(description = "Роль пользователя: ADMIN или STUDENT", example = "STUDENT")
+    @NotNull(message = "Роль обязательна")
     private UserRole role;
 }

@@ -1,5 +1,6 @@
 package ru.istok.backend.course.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
@@ -12,9 +13,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Набор ответов студента на тест урока")
 public class LessonSubmitRequest {
 
     @Valid
-    @NotEmpty
+    @NotEmpty(message = "Нужно передать ответы на вопросы")
+    @Schema(description = "Ответы по вопросам урока")
     private List<LessonSubmitAnswerRequest> answers;
 }

@@ -1,5 +1,6 @@
 package ru.istok.backend.user.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,13 +11,27 @@ import ru.istok.backend.user.entity.UserStatus;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "Данные пользователя")
 public class UserResponse {
 
+    @Schema(description = "Идентификатор пользователя", example = "2")
     private Long id;
+
+    @Schema(description = "Имя пользователя", example = "Иван Иванов")
     private String name;
+
+    @Schema(description = "Логин пользователя", example = "student")
     private String login;
+
+    @Schema(description = "Роль пользователя: ADMIN или STUDENT", example = "STUDENT")
     private UserRole role;
+
+    @Schema(description = "Статус пользователя: ACTIVE или ARCHIVED", example = "ACTIVE")
     private UserStatus status;
+
+    @Schema(description = "Дата создания пользователя")
     private LocalDateTime createdAt;
+
+    @Schema(description = "Дата последнего обновления пользователя")
     private LocalDateTime updatedAt;
 }

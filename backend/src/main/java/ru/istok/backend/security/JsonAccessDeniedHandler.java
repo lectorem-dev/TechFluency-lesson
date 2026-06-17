@@ -31,7 +31,7 @@ public class JsonAccessDeniedHandler implements AccessDeniedHandler {
         objectMapper.writeValue(response.getOutputStream(), ErrorResponse.of(
                 HttpStatus.FORBIDDEN.value(),
                 ErrorCode.ACCESS_DENIED,
-                "Access denied"
+                "Недостаточно прав доступа"
         ));
     }
 }

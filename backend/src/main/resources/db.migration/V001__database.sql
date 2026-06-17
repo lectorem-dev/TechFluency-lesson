@@ -1,6 +1,9 @@
---liquibase formatted sql
+--liquibase formatted sql logicalFilePath:db/changelog/db.changelog-master.sql
+-- Форматированный SQL для Liquibase. Технические директивы `liquibase formatted sql` и `changeset` менять нельзя.
 
---changeset istok:001-create-users
+--changeset istok:001-create-users logicalFilePath:db/changelog/db.changelog-master.sql
+--validCheckSum: 9:87101dbcace72e1dc92df4b1e39290b1
+-- Создание таблицы пользователей.
 CREATE TABLE users (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -12,10 +15,14 @@ CREATE TABLE users (
     updated_at TIMESTAMP NOT NULL
 );
 
---changeset istok:002-create-users-login-index
+--changeset istok:002-create-users-login-index logicalFilePath:db/changelog/db.changelog-master.sql
+--validCheckSum: 9:7fea4942510933577e87b6a75a965da2
+-- Создание уникального индекса на логин пользователя.
 CREATE UNIQUE INDEX ux_users_login ON users (login);
 
---changeset istok:003-create-admin
+--changeset istok:003-create-admin logicalFilePath:db/changelog/db.changelog-master.sql
+--validCheckSum: 9:3d81239d62cc46ffc5724332a11fcc11
+-- Добавление администратора по умолчанию.
 INSERT INTO users (name, login, password_hash, role, status, created_at, updated_at)
 VALUES (
     'Администратор',
@@ -27,7 +34,9 @@ VALUES (
     CURRENT_TIMESTAMP
 );
 
---changeset istok:004-create-course-content-progress
+--changeset istok:004-create-course-content-progress logicalFilePath:db/changelog/db.changelog-master.sql
+--validCheckSum: 9:6ecf0f433f4501a051ee379d018be593
+-- Создание таблиц курсов, уроков, тестов и прогресса пользователей.
 CREATE TABLE courses (
     id BIGSERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL,

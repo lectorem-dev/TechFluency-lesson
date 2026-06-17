@@ -2,7 +2,15 @@ import { type FormEvent, useState } from 'react'
 import { Button } from '../../../shared/ui/Button'
 import { Input } from '../../../shared/ui/Input'
 import { Select } from '../../../shared/ui/Select'
-import type { Role, User, UserCreateRequest, UserStatus, UserUpdateRequest } from '../model/userTypes'
+import {
+  ROLE_LABEL,
+  USER_STATUS_LABEL,
+  type Role,
+  type User,
+  type UserCreateRequest,
+  type UserStatus,
+  type UserUpdateRequest,
+} from '../model/userTypes'
 
 type UserFormProps = {
   isSubmitting: boolean
@@ -92,8 +100,8 @@ export function UserForm({ isSubmitting, mode, onCancel, onSubmit, user }: UserF
         onChange={(event) => setRole(event.target.value as Role)}
         value={role}
       >
-        <option value="STUDENT">STUDENT</option>
-        <option value="ADMIN">ADMIN</option>
+        <option value="STUDENT">{ROLE_LABEL.STUDENT}</option>
+        <option value="ADMIN">{ROLE_LABEL.ADMIN}</option>
       </Select>
       {mode === 'edit' ? (
         <Select
@@ -103,8 +111,8 @@ export function UserForm({ isSubmitting, mode, onCancel, onSubmit, user }: UserF
           onChange={(event) => setStatus(event.target.value as UserStatus)}
           value={status}
         >
-          <option value="ACTIVE">ACTIVE</option>
-          <option value="ARCHIVED">ARCHIVED</option>
+          <option value="ACTIVE">{USER_STATUS_LABEL.ACTIVE}</option>
+          <option value="ARCHIVED">{USER_STATUS_LABEL.ARCHIVED}</option>
         </Select>
       ) : null}
       <div className="form-actions">

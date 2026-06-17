@@ -5,6 +5,7 @@ export async function downloadCertificate() {
     responseType: 'blob',
   })
 
+  // Для скачивания Blob создаем временную ссылку и имитируем клик по ней.
   const url = window.URL.createObjectURL(response.data)
   const link = document.createElement('a')
   link.href = url

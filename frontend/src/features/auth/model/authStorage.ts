@@ -11,6 +11,7 @@ export function saveAuth(response: LoginResponse) {
     role: response.role,
   }
 
+  // Токен и краткий профиль храним раздельно: токен нужен для запросов, профиль — для интерфейса.
   localStorage.setItem(TOKEN_KEY, response.token)
   localStorage.setItem(USER_KEY, JSON.stringify(user))
 }
@@ -29,6 +30,7 @@ export function getAuthUser(): AuthUser | null {
   try {
     return JSON.parse(rawUser) as AuthUser
   } catch {
+    // Если профиль в localStorage поврежден, очищаем обе записи и просим пользователя войти заново.
     clearAuth()
     return null
   }

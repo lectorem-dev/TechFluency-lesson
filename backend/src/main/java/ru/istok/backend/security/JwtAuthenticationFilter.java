@@ -47,6 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             userRepository.findById(jwtUser.userId())
                     .filter(user -> user.getStatus() == UserStatus.ACTIVE)
                     .ifPresent(user -> {
+                        // В контекст безопасности кладём только проверенного активного пользователя.
                         var authority = new SimpleGrantedAuthority("ROLE_" + user.getRole().name());
                         var authentication = new UsernamePasswordAuthenticationToken(
                                 jwtUser,
@@ -56,6 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     });
         } catch (InvalidJwtException ignored) {
+            // Невалидный токен не прерывает цепочку фильтров: защищенный endpoint позже вернет 401.
             SecurityContextHolder.clearContext();
         }
     }

@@ -8,6 +8,7 @@ export function RoleRedirect() {
     return <Navigate to="/login" replace />
   }
 
+  // После входа сразу отправляем пользователя в его раздел без отдельной страницы выбора.
   if (user.role === 'ADMIN') {
     return <Navigate to="/admin/users" replace />
   }

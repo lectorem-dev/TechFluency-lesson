@@ -1,5 +1,5 @@
 import { Button } from '../../../shared/ui/Button'
-import type { User } from '../model/userTypes'
+import { ROLE_LABEL, type User } from '../model/userTypes'
 import { UserStatusBadge } from './UserStatusBadge'
 
 type UsersTableProps = {
@@ -40,7 +40,7 @@ export function UsersTable({ onArchive, onEdit, users }: UsersTableProps) {
               <td>{user.id}</td>
               <td>{user.name}</td>
               <td>{user.login}</td>
-              <td>{user.role}</td>
+              <td>{ROLE_LABEL[user.role]}</td>
               <td>
                 <UserStatusBadge status={user.status} />
               </td>

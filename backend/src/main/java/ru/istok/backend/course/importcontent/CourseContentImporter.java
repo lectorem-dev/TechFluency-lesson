@@ -1,32 +1,25 @@
 package ru.istok.backend.course.importcontent;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import ru.istok.backend.course.entity.Course;
-import ru.istok.backend.course.entity.Lesson;
-import ru.istok.backend.course.entity.LessonPassRule;
-import ru.istok.backend.course.entity.TestAnswer;
-import ru.istok.backend.course.entity.TestQuestion;
-import ru.istok.backend.course.repository.CourseRepository;
-import ru.istok.backend.course.repository.LessonPassRuleRepository;
-import ru.istok.backend.course.repository.LessonRepository;
-import ru.istok.backend.course.repository.TestAnswerRepository;
-import ru.istok.backend.course.repository.TestQuestionRepository;
+import ru.istok.backend.course.entity.*;
+import ru.istok.backend.course.repository.*;
 import tools.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -36,7 +29,7 @@ public class CourseContentImporter implements ApplicationRunner {
     private static final String COURSE_TITLE = "Основной курс";
     private static final String COURSE_DESCRIPTION = "Единый курс MVP платформы";
 
-    // TODO: replace hardcoded lesson manifest with configurable course manifest
+    // TODO: вынести жестко заданный манифест уроков в отдельную конфигурацию курса.
     private static final List<LessonManifestItem> MANIFEST = List.of(
             new LessonManifestItem(1, "lesson-1.md", "test-1.json"),
             new LessonManifestItem(2, "lesson-2.md", "test-2.json"),
@@ -55,13 +48,13 @@ public class CourseContentImporter implements ApplicationRunner {
 
     @Override
     @Transactional
-    public void run(ApplicationArguments args) {
+    public void run(@NonNull ApplicationArguments args) {
         try {
             importContent();
         } catch (ContentImportException exception) {
             throw exception;
         } catch (RuntimeException exception) {
-            throw new ContentImportException("Failed to import course content: " + exception.getMessage(), exception);
+            throw new ContentImportException("Не удалось импортировать содержимое курса: " + exception.getMessage(), exception);
         }
     }
 
@@ -88,12 +81,12 @@ public class CourseContentImporter implements ApplicationRunner {
             upsertLesson(course, item.position(), markdown, test);
         }
 
-        log.info("Imported course content from {}", root);
+        log.info("Содержимое курса импортировано из {}", root);
     }
 
     private void ensureDirectory(Path directory, String name) {
         if (!Files.isDirectory(directory)) {
-            throw new ContentImportException("Content directory '%s' is missing: %s".formatted(name, directory));
+            throw new ContentImportException("Не найдена директория '%s': %s".formatted(name, directory));
         }
     }
 
@@ -105,21 +98,22 @@ public class CourseContentImporter implements ApplicationRunner {
                     .map(path -> path.getFileName().toString())
                     .collect(Collectors.toSet());
         } catch (IOException exception) {
-            throw new ContentImportException("Failed to list content directory: " + directory, exception);
+            throw new ContentImportException("Не удалось прочитать содержимое директории: " + directory, exception);
         }
 
+        // Для MVP ожидаем строгий набор файлов: так сразу видны лишние и пропущенные материалы.
         Set<String> missingFiles = expectedFiles.stream()
                 .filter(file -> !actualFiles.contains(file))
                 .collect(Collectors.toSet());
         if (!missingFiles.isEmpty()) {
-            throw new ContentImportException("Missing expected content files in %s: %s".formatted(directory, missingFiles));
+            throw new ContentImportException("В директории %s отсутствуют ожидаемые файлы: %s".formatted(directory, missingFiles));
         }
 
         Set<String> extraFiles = actualFiles.stream()
                 .filter(file -> !expectedFiles.contains(file))
                 .collect(Collectors.toSet());
         if (!extraFiles.isEmpty()) {
-            throw new ContentImportException("Unexpected content files in %s: %s".formatted(directory, extraFiles));
+            throw new ContentImportException("В директории %s найдены лишние файлы: %s".formatted(directory, extraFiles));
         }
     }
 
@@ -127,9 +121,10 @@ public class CourseContentImporter implements ApplicationRunner {
         for (LessonManifestItem item : MANIFEST) {
             String expectedLessonFile = "lesson-%d.md".formatted(item.position());
             String expectedTestFile = "test-%d.json".formatted(item.position());
+            // lesson-n.md и test-n.json должны совпадать с номером урока в манифесте.
             if (!expectedLessonFile.equals(item.lessonFile()) || !expectedTestFile.equals(item.testFile())) {
                 throw new ContentImportException(
-                        "Lesson and test numbers do not match manifest position %d".formatted(item.position())
+                        "Номера lesson/test не совпадают с позицией %d в манифесте".formatted(item.position())
                 );
             }
         }
@@ -139,7 +134,7 @@ public class CourseContentImporter implements ApplicationRunner {
         try {
             return Files.readString(path, StandardCharsets.UTF_8);
         } catch (IOException exception) {
-            throw new ContentImportException("Failed to read markdown file: " + path, exception);
+            throw new ContentImportException("Не удалось прочитать markdown-файл: " + path, exception);
         }
     }
 
@@ -147,25 +142,25 @@ public class CourseContentImporter implements ApplicationRunner {
         try {
             return objectMapper.readValue(path.toFile(), TestFileDto.class);
         } catch (Exception exception) {
-            throw new ContentImportException("Invalid test JSON file '%s': %s".formatted(path, exception.getMessage()), exception);
+            throw new ContentImportException("Некорректный JSON-файл теста '%s': %s".formatted(path, exception.getMessage()), exception);
         }
     }
 
     private void validateTest(TestFileDto test, String fileName) {
         if (test.getPassPercent() == null || test.getPassPercent() < 1 || test.getPassPercent() > 100) {
-            throw new ContentImportException("Test '%s' must contain passPercent from 1 to 100".formatted(fileName));
+            throw new ContentImportException("Тест '%s' должен содержать passPercent от 1 до 100".formatted(fileName));
         }
         if (test.getQuestions() == null || test.getQuestions().isEmpty()) {
-            throw new ContentImportException("Test '%s' must contain at least one question".formatted(fileName));
+            throw new ContentImportException("Тест '%s' должен содержать хотя бы один вопрос".formatted(fileName));
         }
 
         for (int questionIndex = 0; questionIndex < test.getQuestions().size(); questionIndex++) {
             TestQuestionFileDto question = test.getQuestions().get(questionIndex);
             if (!StringUtils.hasText(question.getText())) {
-                throw new ContentImportException("Question %d in '%s' must contain text".formatted(questionIndex + 1, fileName));
+                throw new ContentImportException("Вопрос %d в '%s' должен содержать текст".formatted(questionIndex + 1, fileName));
             }
             if (question.getAnswers() == null || question.getAnswers().size() < 2) {
-                throw new ContentImportException("Question %d in '%s' must contain at least two answers".formatted(questionIndex + 1, fileName));
+                throw new ContentImportException("Вопрос %d в '%s' должен содержать минимум два ответа".formatted(questionIndex + 1, fileName));
             }
 
             long correctCount = question.getAnswers().stream()
@@ -178,10 +173,10 @@ public class CourseContentImporter implements ApplicationRunner {
                     .anyMatch(answer -> !StringUtils.hasText(answer.getText()) || answer.getCorrect() == null);
 
             if (hasInvalidAnswer) {
-                throw new ContentImportException("Question %d in '%s' contains invalid answer".formatted(questionIndex + 1, fileName));
+                throw new ContentImportException("Вопрос %d в '%s' содержит некорректный ответ".formatted(questionIndex + 1, fileName));
             }
             if (correctCount != 1 || incorrectCount < 1) {
-                throw new ContentImportException("Question %d in '%s' must contain exactly one correct answer and at least one incorrect answer".formatted(questionIndex + 1, fileName));
+                throw new ContentImportException("Вопрос %d в '%s' должен содержать ровно один правильный и хотя бы один неправильный ответ".formatted(questionIndex + 1, fileName));
             }
         }
     }
@@ -199,6 +194,7 @@ public class CourseContentImporter implements ApplicationRunner {
         rule.setPassPercent(test.getPassPercent());
         lessonPassRuleRepository.save(rule);
 
+        // При переимпорте полностью пересоздаем вопросы и ответы урока, чтобы база точно совпадала с файлами.
         testQuestionRepository.deleteByLessonId(lesson.getId());
         testQuestionRepository.flush();
 

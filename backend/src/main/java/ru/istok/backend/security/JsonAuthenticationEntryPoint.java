@@ -31,7 +31,7 @@ public class JsonAuthenticationEntryPoint implements AuthenticationEntryPoint {
         objectMapper.writeValue(response.getOutputStream(), ErrorResponse.of(
                 HttpStatus.UNAUTHORIZED.value(),
                 ErrorCode.INVALID_LOGIN_OR_PASSWORD,
-                "Authentication required"
+                "Требуется авторизация"
         ));
     }
 }

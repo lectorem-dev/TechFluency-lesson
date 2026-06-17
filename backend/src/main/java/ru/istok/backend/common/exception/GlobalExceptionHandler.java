@@ -13,6 +13,7 @@ import ru.istok.backend.common.web.ErrorResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // Все ошибки API приводим к единому JSON-формату, чтобы фронт мог обрабатывать их одинаково.
     @ExceptionHandler(AppException.class)
     public ResponseEntity<ErrorResponse> handleAppException(AppException exception) {
         return ResponseEntity
@@ -37,19 +38,19 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.of(
                         HttpStatus.BAD_REQUEST.value(),
                         ErrorCode.VALIDATION_ERROR,
-                        "Validation error",
+                        "Ошибка валидации",
                         details
                 ));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidRequestBody(HttpMessageNotReadableException exception) {
+    public ResponseEntity<ErrorResponse> handleInvalidRequestBody() {
         return ResponseEntity
                 .badRequest()
                 .body(ErrorResponse.of(
                         HttpStatus.BAD_REQUEST.value(),
                         ErrorCode.VALIDATION_ERROR,
-                        "Invalid request body"
+                        "Некорректное тело запроса"
                 ));
     }
 

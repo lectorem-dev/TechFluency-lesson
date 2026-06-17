@@ -2,6 +2,7 @@ package ru.istok.backend.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,9 +27,9 @@ public class AdminSeedRunner implements ApplicationRunner {
 
     @Override
     @Transactional
-    public void run(ApplicationArguments args) {
+    public void run(@NonNull ApplicationArguments args) {
         String passwordHash = passwordEncoder.encode(ADMIN_PASSWORD);
-        log.info("Seed admin BCrypt password hash: {}", passwordHash);
+        log.info("BCrypt-хеш для встроенного администратора: {}", passwordHash);
 
         User admin = userRepository.findByLogin(ADMIN_LOGIN)
                 .orElseGet(User::new);
@@ -40,6 +41,6 @@ public class AdminSeedRunner implements ApplicationRunner {
         admin.setStatus(UserStatus.ACTIVE);
 
         userRepository.save(admin);
-        log.info("Seed admin user '{}' has been written to database", ADMIN_LOGIN);
+        log.info("Встроенный пользователь '{}' сохранен в базе данных", ADMIN_LOGIN);
     }
 }

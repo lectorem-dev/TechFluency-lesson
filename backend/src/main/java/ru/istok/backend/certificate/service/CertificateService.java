@@ -1,11 +1,5 @@
 package ru.istok.backend.certificate.service;
 
-import java.awt.Color;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -27,6 +21,14 @@ import ru.istok.backend.security.JwtUser;
 import ru.istok.backend.user.entity.User;
 import ru.istok.backend.user.entity.UserStatus;
 import ru.istok.backend.user.repository.UserRepository;
+
+import java.awt.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -66,6 +68,7 @@ public class CertificateService {
                 course.getId()
         );
 
+        // Сертификат доступен только после прохождения всех уроков курса.
         if (totalLessons == 0 || completedLessons < totalLessons) {
             throw new CourseNotCompletedException();
         }
@@ -92,24 +95,25 @@ public class CertificateService {
             document.save(outputStream);
             return outputStream.toByteArray();
         } catch (IOException exception) {
-            throw new IllegalStateException("Failed to generate certificate PDF", exception);
+            throw new IllegalStateException("Не удалось сформировать PDF-сертификат", exception);
         }
     }
 
     private Path resolveFontPath() {
+        // Ищем системный TrueType-шрифт с поддержкой кириллицы, чтобы имя студента корректно попало в PDF.
         return FONT_CANDIDATES.stream()
                 .filter(Files::isRegularFile)
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("No TrueType font found for certificate PDF"));
+                .orElseThrow(() -> new IllegalStateException("Не найден TrueType-шрифт для генерации PDF-сертификата"));
     }
 
     private User getCurrentUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object principal = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
         if (!(principal instanceof JwtUser jwtUser)) {
-            throw new UserNotFoundException(-1L);
+            throw new UserNotFoundException();
         }
 
         return userRepository.findById(jwtUser.userId())
-                .orElseThrow(() -> new UserNotFoundException(jwtUser.userId()));
+                .orElseThrow(UserNotFoundException::new);
     }
 }

@@ -33,6 +33,7 @@ public class CourseMapper {
             return 0;
         }
 
+        // Прогресс считаем по завершенным урокам, а не по попыткам прохождения тестов.
         return (int) Math.round(completedLessons * 100.0 / totalLessons);
     }
 }

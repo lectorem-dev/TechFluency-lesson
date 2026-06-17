@@ -14,6 +14,7 @@ type LessonTestProps = {
 export function LessonTest({ error, isSubmitting, onSubmit, test }: LessonTestProps) {
   const [selectedAnswers, setSelectedAnswers] = useState<SelectedAnswers>({})
 
+  // Пока не выбран ответ в каждом вопросе, отправку блокируем, чтобы backend получал полный набор ответов.
   const allQuestionsAnswered = useMemo(
     () => test.questions.every((question) => selectedAnswers[question.id] !== undefined),
     [selectedAnswers, test.questions],

@@ -19,24 +19,24 @@ import ru.istok.backend.certificate.service.CertificateService;
 @RestController
 @RequestMapping("/api/certificate")
 @RequiredArgsConstructor
-@Tag(name = "Certificate")
+@Tag(name = "Сертификат", description = "Получение PDF-сертификата о завершении курса")
 public class CertificateController {
 
     private final CertificateService certificateService;
 
     @GetMapping(produces = MediaType.APPLICATION_PDF_VALUE)
     @Operation(
-            summary = "Download course completion certificate",
+            summary = "Скачивание PDF-сертификата",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "PDF certificate",
+                            description = "PDF-файл сертификата",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_PDF_VALUE,
                                     schema = @Schema(type = "string", format = "binary")
                             )
                     ),
-                    @ApiResponse(responseCode = "403", description = "Course is not completed")
+                    @ApiResponse(responseCode = "403", description = "Курс еще не завершен")
             }
     )
     public ResponseEntity<byte[]> downloadCertificate() {

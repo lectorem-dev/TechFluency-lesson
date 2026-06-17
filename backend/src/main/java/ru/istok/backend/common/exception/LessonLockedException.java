@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 
 public class LessonLockedException extends AppException {
 
-    public LessonLockedException(Long id) {
-        super(HttpStatus.FORBIDDEN, ErrorCode.LESSON_LOCKED, "Lesson with id %d is locked".formatted(id));
+    public LessonLockedException() {
+        super(HttpStatus.FORBIDDEN, ErrorCode.LESSON_LOCKED, "Урок пока недоступен");
     }
 }

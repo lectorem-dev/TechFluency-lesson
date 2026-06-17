@@ -56,6 +56,7 @@ function getSubmitError(error: unknown) {
 export function LessonPage() {
   const { lessonId: lessonIdParam } = useParams()
 
+  // При смене lessonId перемонтируем страницу урока, чтобы сбросить локальное состояние предыдущего урока.
   return <LessonPageContent key={lessonIdParam ?? 'invalid'} lessonIdParam={lessonIdParam} />
 }
 
@@ -129,6 +130,7 @@ function LessonPageContent({ lessonIdParam }: LessonPageContentProps) {
   }
 
   async function handleRetry() {
+    // Повторная загрузка урока нужна и для сброса результата, и для нового перемешивания ответов.
     setResult(null)
     setSubmitError('')
     setLoadError(null)

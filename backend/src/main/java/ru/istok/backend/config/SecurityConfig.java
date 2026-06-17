@@ -1,6 +1,5 @@
 package ru.istok.backend.config;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +20,8 @@ import ru.istok.backend.security.JsonAccessDeniedHandler;
 import ru.istok.backend.security.JsonAuthenticationEntryPoint;
 import ru.istok.backend.security.JwtAuthenticationFilter;
 
+import java.util.List;
+
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -30,18 +31,20 @@ public class SecurityConfig {
     private final JsonAccessDeniedHandler accessDeniedHandler;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         return http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
+                // Приложение целиком работает по JWT, поэтому сервер не хранит HTTP-сессии.
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(authenticationEntryPoint)
                         .accessDeniedHandler(accessDeniedHandler)
                 )
+                // Правила доступа описаны по ролям и URL, чтобы студенту было видно, какие зоны API защищены.
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
@@ -63,6 +66,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
+            // Bean нужен Spring Security, хотя собственный вход по логину/паролю реализован в AuthService.
             throw new UsernameNotFoundException(username);
         };
     }

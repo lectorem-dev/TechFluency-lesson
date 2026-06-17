@@ -1,13 +1,7 @@
 package ru.istok.backend.course.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -105,7 +99,7 @@ public class CourseService {
         Map<Long, LessonProgress> progressByLessonId = getProgressByLessonId(user.getId(), lessons);
 
         if (getLessonStatus(lesson, progressByLessonId) == LessonStatus.LOCKED) {
-            throw new LessonLockedException(lessonId);
+            throw new LessonLockedException();
         }
 
         LessonPassRule rule = getPassRule(lesson.getId());
@@ -134,7 +128,7 @@ public class CourseService {
         Map<Long, LessonProgress> progressByLessonId = getProgressByLessonId(user.getId(), lessons);
 
         if (getLessonStatus(lesson, progressByLessonId) == LessonStatus.LOCKED) {
-            throw new LessonLockedException(lessonId);
+            throw new LessonLockedException();
         }
 
         LessonPassRule rule = getPassRule(lesson.getId());
@@ -187,6 +181,7 @@ public class CourseService {
         List<TestAnswerResponse> answerResponses = answers.stream()
                 .map(answer -> new TestAnswerResponse(answer.getId(), answer.getText()))
                 .collect(Collectors.toCollection(ArrayList::new));
+        // Порядок ответов перемешивается на каждой загрузке урока, чтобы нельзя было запомнить позицию правильного варианта.
         Collections.shuffle(answerResponses);
 
         return new TestQuestionResponse(question.getId(), question.getText(), answerResponses);
@@ -198,16 +193,17 @@ public class CourseService {
             Map<Long, List<TestAnswer>> answersByQuestionId
     ) {
         if (request.getAnswers() == null || request.getAnswers().isEmpty()) {
-            throw new SubmitValidationException("Answers are required");
+            throw new SubmitValidationException("Нужно передать ответы на все вопросы");
         }
 
+        // Клиент должен прислать ровно по одному ответу на каждый вопрос именно этого урока.
         Set<Long> requestQuestionIds = new HashSet<>();
         for (LessonSubmitAnswerRequest answer : request.getAnswers()) {
             if (answer.getQuestionId() == null || answer.getAnswerId() == null) {
-                throw new SubmitValidationException("Question id and answer id are required");
+                throw new SubmitValidationException("Для каждого ответа нужны questionId и answerId");
             }
             if (!requestQuestionIds.add(answer.getQuestionId())) {
-                throw new SubmitValidationException("Duplicate question id: " + answer.getQuestionId());
+                throw new SubmitValidationException("В запросе найден повторяющийся questionId: " + answer.getQuestionId());
             }
         }
 
@@ -215,14 +211,14 @@ public class CourseService {
                 .filter(questionId -> !requestQuestionIds.contains(questionId))
                 .collect(Collectors.toSet());
         if (!missingQuestionIds.isEmpty()) {
-            throw new SubmitValidationException("Missing answers for questions: " + missingQuestionIds);
+            throw new SubmitValidationException("Нет ответов для вопросов: " + missingQuestionIds);
         }
 
         Set<Long> extraQuestionIds = requestQuestionIds.stream()
                 .filter(questionId -> !expectedQuestionIds.contains(questionId))
                 .collect(Collectors.toSet());
         if (!extraQuestionIds.isEmpty()) {
-            throw new SubmitValidationException("Unexpected questions in request: " + extraQuestionIds);
+            throw new SubmitValidationException("В запросе есть лишние вопросы: " + extraQuestionIds);
         }
 
         for (LessonSubmitAnswerRequest answer : request.getAnswers()) {
@@ -231,7 +227,7 @@ public class CourseService {
                     .anyMatch(testAnswer -> testAnswer.getId().equals(answer.getAnswerId()));
             if (!belongsToQuestion) {
                 throw new SubmitValidationException(
-                        "Answer %d does not belong to question %d".formatted(answer.getAnswerId(), answer.getQuestionId())
+                        "Ответ %d не относится к вопросу %d".formatted(answer.getAnswerId(), answer.getQuestionId())
                 );
             }
         }
@@ -250,6 +246,7 @@ public class CourseService {
         progress.setUser(user);
         progress.setLesson(lesson);
         progress.setPassed(true);
+        // completedAt фиксируем по первой успешной попытке, а лучший процент можем повышать последующими попытками.
         progress.setCompletedAt(progress.getCompletedAt() == null ? LocalDateTime.now() : progress.getCompletedAt());
         progress.setBestScorePercent(progress.getBestScorePercent() == null
                 ? scorePercent
@@ -276,6 +273,7 @@ public class CourseService {
             return LessonStatus.AVAILABLE;
         }
 
+        // Урок открывается только после прохождения предыдущего урока по порядковому номеру.
         boolean previousPassed = progressByLessonId.values()
                 .stream()
                 .anyMatch(progress -> progress.getLesson().getPosition().equals(lesson.getPosition() - 1)
@@ -313,7 +311,7 @@ public class CourseService {
         return lessons.stream()
                 .filter(lesson -> lesson.getId().equals(lessonId))
                 .findFirst()
-                .orElseThrow(() -> new LessonNotFoundException(lessonId));
+                .orElseThrow(() -> new LessonNotFoundException());
     }
 
     private Course getMainCourse() {
@@ -327,7 +325,7 @@ public class CourseService {
 
     private LessonPassRule getPassRule(Long lessonId) {
         return lessonPassRuleRepository.findByLessonId(lessonId)
-                .orElseThrow(() -> new IllegalStateException("Pass rule for lesson %d not found".formatted(lessonId)));
+                .orElseThrow(() -> new IllegalStateException("Для урока %d не найдено правило прохождения".formatted(lessonId)));
     }
 
     private int countCompletedLessons(Long userId, Long courseId) {
@@ -335,12 +333,12 @@ public class CourseService {
     }
 
     private User getCurrentUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object principal = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
         if (!(principal instanceof JwtUser jwtUser)) {
-            throw new UserNotFoundException(-1L);
+            throw new UserNotFoundException();
         }
 
         return userRepository.findById(jwtUser.userId())
-                .orElseThrow(() -> new UserNotFoundException(jwtUser.userId()));
+                .orElseThrow(UserNotFoundException::new);
     }
 }
