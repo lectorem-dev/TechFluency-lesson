@@ -3,7 +3,9 @@ FROM node:22-alpine AS build
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+
+# Отключаем проверку SSL потому что у нас лучшый в мире интернет
+RUN npm ci --strict-ssl=false
 
 COPY . .
 
