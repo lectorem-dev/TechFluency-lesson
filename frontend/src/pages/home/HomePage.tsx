@@ -5,6 +5,9 @@ export function HomePage() {
     <div className="home-page">
       <header className="home-header">
         <Link className="home-header__brand" to="/">
+          <span className="home-header__logo-wrap">
+            <img src="/logo.png" alt="" className="home-header__logo" />
+          </span>
           Техноварк
         </Link>
         <Link aria-label="Перейти ко входу в профиль" className="home-header__profile-link" to="/login">

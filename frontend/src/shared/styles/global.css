@@ -275,11 +275,33 @@ a {
 }
 
 .home-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   font-family: var(--font-heading);
   font-size: 24px;
   line-height: 1.1;
   color: var(--color-text);
   text-shadow: 0 0 18px rgba(32, 217, 255, 0.28);
+}
+
+.home-header__logo-wrap {
+  width: 46px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid rgba(32, 217, 255, 0.3);
+  border-radius: 10px;
+  background: rgba(7, 9, 31, 0.62);
+  box-shadow: 0 0 18px rgba(32, 217, 255, 0.1);
+}
+
+.home-header__logo {
+  max-width: 34px;
+  max-height: 24px;
+  display: block;
+  object-fit: contain;
 }
 
 .home-header__profile-link {
@@ -960,6 +982,17 @@ a {
 
   .home-header__brand {
     font-size: 18px;
+    gap: 8px;
+  }
+
+  .home-header__logo-wrap {
+    width: 40px;
+    height: 30px;
+  }
+
+  .home-header__logo {
+    max-width: 30px;
+    max-height: 21px;
   }
 
   .home-main {
