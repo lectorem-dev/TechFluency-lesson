@@ -80,8 +80,10 @@ def upgrade() -> None:
         sa.Column("lesson_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("position", sa.Integer(), nullable=False),
         sa.Column("text", sa.Text(), nullable=False),
+        sa.Column("points", sa.Integer(), nullable=False),
         sa.Column("created_at", sa.DateTime(), nullable=False, server_default=sa.text("CURRENT_TIMESTAMP")),
         sa.Column("updated_at", sa.DateTime(), nullable=False, server_default=sa.text("CURRENT_TIMESTAMP")),
+        sa.CheckConstraint("points >= 1", name="chk_test_questions_points"),
         sa.ForeignKeyConstraint(["lesson_id"], ["lessons.id"], ondelete="CASCADE"),
     )
 
@@ -102,9 +104,11 @@ def upgrade() -> None:
         sa.Column("id", postgresql.UUID(as_uuid=True), primary_key=True, server_default=sa.text("gen_random_uuid()")),
         sa.Column("lesson_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("pass_percent", sa.Integer(), nullable=False),
+        sa.Column("pass_score", sa.Integer(), nullable=False),
         sa.Column("created_at", sa.DateTime(), nullable=False, server_default=sa.text("CURRENT_TIMESTAMP")),
         sa.Column("updated_at", sa.DateTime(), nullable=False, server_default=sa.text("CURRENT_TIMESTAMP")),
         sa.CheckConstraint("pass_percent BETWEEN 1 AND 100", name="chk_lesson_pass_rules_pass_percent"),
+        sa.CheckConstraint("pass_score >= 1", name="chk_lesson_pass_rules_pass_score"),
         sa.ForeignKeyConstraint(["lesson_id"], ["lessons.id"], ondelete="CASCADE"),
         sa.UniqueConstraint("lesson_id", name="uq_lesson_pass_rules_lesson"),
     )

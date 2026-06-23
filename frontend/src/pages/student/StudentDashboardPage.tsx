@@ -5,7 +5,6 @@ import { getCourse, getLessons, getProgress } from '../../features/course/api/co
 import type { CourseSummary, LessonListItem } from '../../features/course/model/courseTypes'
 import { CourseProgressBar } from '../../features/course/ui/CourseProgressBar'
 import { LessonList } from '../../features/course/ui/LessonList'
-import { getAuthUser } from '../../features/auth/model/authStorage'
 import { Button } from '../../shared/ui/Button'
 import { PageLayout } from '../../shared/ui/PageLayout'
 
@@ -22,7 +21,6 @@ function getErrorMessage(error: unknown) {
 
 export function StudentDashboardPage() {
   const navigate = useNavigate()
-  const user = getAuthUser()
   const [course, setCourse] = useState<CourseSummary | null>(null)
   const [lessons, setLessons] = useState<LessonListItem[]>([])
   const [courseCompleted, setCourseCompleted] = useState(false)
@@ -64,12 +62,6 @@ export function StudentDashboardPage() {
 
       {!isLoading && !error && course ? (
         <div className="student-dashboard">
-          <section className="course-summary">
-            <p className="course-summary__user">Здравствуйте, {user?.name ?? 'студент'}.</p>
-            <h2>{course.title}</h2>
-            {course.description ? <p>{course.description}</p> : null}
-          </section>
-
           <CourseProgressBar
             completedLessons={course.completedLessons}
             progressPercent={course.progressPercent}
