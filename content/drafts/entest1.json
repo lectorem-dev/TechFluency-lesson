@@ -1,0 +1,90 @@
+{
+  "test": {
+    "title": "DataPro Inc. Test",
+    "sections": [
+      {
+        "type": "true_false",
+        "instructions": "Read the statement from the DataPro Inc. CEO. Then, mark the following statements as true or false.",
+        "questions": [
+          {
+            "id": 1,
+            "statement": "The IT Department is increasing.",
+            "answer": false
+          },
+          {
+            "id": 2,
+            "statement": "Data Processing employees now encode data.",
+            "answer": false
+          },
+          {
+            "id": 3,
+            "statement": "Supervisors know the employees' new assignments.",
+            "answer": true
+          }
+        ]
+      },
+      {
+        "type": "matching",
+        "instructions": "Match the words (1-10) with the definitions (A-J).",
+        "terms": [
+          {"id": 1, "term": "software"},
+          {"id": 2, "term": "code"},
+          {"id": 3, "term": "hardware"},
+          {"id": 4, "term": "data processing"},
+          {"id": 5, "term": "information security"},
+          {"id": 6, "term": "online"},
+          {"id": 7, "term": "technical support"},
+          {"id": 8, "term": "data"},
+          {"id": 9, "term": "quality assurance"},
+          {"id": 10, "term": "encoding"}
+        ],
+        "definitions": [
+          {"letter": "A", "definition": "putting secret information into code"},
+          {"letter": "B", "definition": "the physical parts of a computer"},
+          {"letter": "C", "definition": "connected to the Internet"},
+          {"letter": "D", "definition": "numbers entered/held in a computer"},
+          {"letter": "E", "definition": "checking products for problems"},
+          {"letter": "F", "definition": "the act of using information"},
+          {"letter": "G", "definition": "programs/instructions added to computers"},
+          {"letter": "H", "definition": "helping people use/understand technology"},
+          {"letter": "I", "definition": "program language"},
+          {"letter": "J", "definition": "the act of protecting information"}
+        ],
+        "answers": {
+          "1": "G",
+          "2": "I",
+          "3": "B",
+          "4": "F",
+          "5": "J",
+          "6": "C",
+          "7": "H",
+          "8": "D",
+          "9": "E",
+          "10": "A"
+        }
+      },
+      {
+        "type": "fill_in_blank",
+        "instructions": "Fill in the blanks with the correct words from the word bank.",
+        "word_bank": ["Data", "quality assurance", "encoding"],
+        "questions": [
+          {
+            "id": 1,
+            "sentence": "Enter the ___ into the computer.",
+            "answer": "Data"
+          },
+          {
+            "id": 2,
+            "sentence": "The company uses ___ to protect information.",
+            "answer": "encoding"
+          },
+          {
+            "id": 3,
+            "sentence": "___ finds and fixes problems in new products.",
+            "answer": "quality assurance"
+          }
+        ]
+      }
+    ]
+  }
+}
