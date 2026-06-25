@@ -1,59 +1,195 @@
 {
-  "title": "Тест по структуре курса",
-  "passScore": 4,
+  "title": "IT Jobs and Careers",
+  "passScore": 15,
   "questions": [
     {
-      "text": "Когда открывается следующий урок?",
-      "points": 2,
-      "answers": [
-        {
-          "text": "После успешного прохождения предыдущего урока",
-          "correct": true
-        },
-        {
-          "text": "Сразу после регистрации",
-          "correct": false
-        },
-        {
-          "text": "Только после действий администратора",
-          "correct": false
-        }
-      ]
-    },
-    {
-      "text": "Что показывает прогресс курса?",
-      "points": 2,
-      "answers": [
-        {
-          "text": "Сколько уроков уже пройдено относительно общего количества",
-          "correct": true
-        },
-        {
-          "text": "Сколько пользователей зарегистрировано",
-          "correct": false
-        },
-        {
-          "text": "Сколько файлов лежит в папке content",
-          "correct": false
-        }
-      ]
-    },
-    {
-      "text": "Почему уроки идут последовательно?",
+      "text": "Who writes code for applications?",
       "points": 1,
       "answers": [
-        {
-          "text": "Чтобы сохранить логику обучения и не пропускать этапы",
-          "correct": true
-        },
-        {
-          "text": "Чтобы скрыть все материалы от администратора",
-          "correct": false
-        },
-        {
-          "text": "Чтобы отключить тестирование",
-          "correct": false
-        }
+        { "text": "Data Scientist", "correct": false },
+        { "text": "Cybersecurity Specialist", "correct": false },
+        { "text": "Software Developer", "correct": true },
+        { "text": "Network Administrator", "correct": false }
+      ]
+    },
+    {
+      "text": "Which professional analyzes large datasets to find patterns?",
+      "points": 1,
+      "answers": [
+        { "text": "DevOps Engineer", "correct": false },
+        { "text": "Data Scientist", "correct": true },
+        { "text": "Software Developer", "correct": false },
+        { "text": "Cybersecurity Specialist", "correct": false }
+      ]
+    },
+    {
+      "text": "Who is responsible for protecting systems from digital attacks?",
+      "points": 1,
+      "answers": [
+        { "text": "Network Administrator", "correct": false },
+        { "text": "DevOps Engineer", "correct": false },
+        { "text": "Software Developer", "correct": false },
+        { "text": "Cybersecurity Specialist", "correct": true }
+      ]
+    },
+    {
+      "text": "What is the primary responsibility of a Network Administrator?",
+      "points": 1,
+      "answers": [
+        { "text": "Writing application code", "correct": false },
+        { "text": "Analyzing business data", "correct": false },
+        { "text": "Managing computer networks", "correct": true },
+        { "text": "Implementing security measures", "correct": false }
+      ]
+    },
+    {
+      "text": "Which role focuses on deployment automation?",
+      "points": 1,
+      "answers": [
+        { "text": "Data Scientist", "correct": false },
+        { "text": "DevOps Engineer", "correct": true },
+        { "text": "Software Developer", "correct": false },
+        { "text": "Cybersecurity Specialist", "correct": false }
+      ]
+    },
+    {
+      "text": "Match: DevOps Engineer",
+      "points": 1,
+      "answers": [
+        { "text": "Manages an organization's computer networks", "correct": false },
+        { "text": "Works on deployment automation and infrastructure management", "correct": true },
+        { "text": "Analyzes large datasets to find patterns", "correct": false },
+        { "text": "Protects systems from digital attacks", "correct": false }
+      ]
+    },
+    {
+      "text": "Match: Network Administrator",
+      "points": 1,
+      "answers": [
+        { "text": "Manages an organization's computer networks", "correct": true },
+        { "text": "Writes code for applications", "correct": false },
+        { "text": "Analyzes large datasets", "correct": false },
+        { "text": "Protects systems from attacks", "correct": false }
+      ]
+    },
+    {
+      "text": "Match: Data Scientist",
+      "points": 1,
+      "answers": [
+        { "text": "Manages computer networks", "correct": false },
+        { "text": "Analyzes large datasets to find patterns and insights", "correct": true },
+        { "text": "Writes code for applications", "correct": false },
+        { "text": "Automates deployment", "correct": false }
+      ]
+    },
+    {
+      "text": "Match: Cybersecurity Specialist",
+      "points": 1,
+      "answers": [
+        { "text": "Protects systems from digital attacks and implements security measures", "correct": true },
+        { "text": "Manages computer networks", "correct": false },
+        { "text": "Analyzes data", "correct": false },
+        { "text": "Writes application code", "correct": false }
+      ]
+    },
+    {
+      "text": "Match: Software Developer",
+      "points": 1,
+      "answers": [
+        { "text": "Writes code for applications and maintains software systems", "correct": true },
+        { "text": "Protects systems from attacks", "correct": false },
+        { "text": "Manages networks", "correct": false },
+        { "text": "Analyzes datasets", "correct": false }
+      ]
+    },
+    {
+      "text": "True or False: A Software Developer is primarily responsible for protecting systems from cyber attacks.",
+      "points": 1,
+      "answers": [
+        { "text": "True", "correct": false },
+        { "text": "False", "correct": true }
+      ]
+    },
+    {
+      "text": "True or False: DevOps Engineers focus on automating software deployment processes.",
+      "points": 1,
+      "answers": [
+        { "text": "True", "correct": true },
+        { "text": "False", "correct": false }
+      ]
+    },
+    {
+      "text": "True or False: Network Administrators analyze large datasets for business insights.",
+      "points": 1,
+      "answers": [
+        { "text": "True", "correct": false },
+        { "text": "False", "correct": true }
+      ]
+    },
+    {
+      "text": "True or False: Data Scientists help businesses make data-driven decisions.",
+      "points": 1,
+      "answers": [
+        { "text": "True", "correct": true },
+        { "text": "False", "correct": false }
+      ]
+    },
+    {
+      "text": "True or False: Cybersecurity Specialists only work with antivirus software.",
+      "points": 1,
+      "answers": [
+        { "text": "True", "correct": false },
+        { "text": "False", "correct": true }
+      ]
+    },
+    {
+      "text": "What does 'DevOps' stand for?",
+      "points": 1,
+      "answers": [
+        { "text": "Development and Operations", "correct": true },
+        { "text": "Data and Operations", "correct": false },
+        { "text": "Digital Operations", "correct": false },
+        { "text": "Desktop Operations", "correct": false }
+      ]
+    },
+    {
+      "text": "What is the primary responsibility of a Cybersecurity Specialist?",
+      "points": 1,
+      "answers": [
+        { "text": "Protecting systems from digital attacks", "correct": true },
+        { "text": "Writing application code", "correct": false },
+        { "text": "Managing computer networks", "correct": false },
+        { "text": "Analyzing data", "correct": false }
+      ]
+    },
+    {
+      "text": "Name one key skill required for a Data Scientist.",
+      "points": 1,
+      "answers": [
+        { "text": "Data analysis", "correct": true },
+        { "text": "Network configuration", "correct": false },
+        { "text": "Antivirus installation", "correct": false },
+        { "text": "Hardware repair", "correct": false }
+      ]
+    },
+    {
+      "text": "What type of networks does a Network Administrator manage?",
+      "points": 1,
+      "answers": [
+        { "text": "Computer networks", "correct": true },
+        { "text": "Social networks", "correct": false },
+        { "text": "Neural networks", "correct": false },
+        { "text": "Food networks", "correct": false }
+      ]
+    },
+    {
+      "text": "What do Software Developers create?",
+      "points": 1,
+      "answers": [
+        { "text": "Applications", "correct": true },
+        { "text": "Network cables", "correct": false },
+        { "text": "Security policies", "correct": false },
+        { "text": "Data reports", "correct": false }
       ]
     }
   ]

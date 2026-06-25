@@ -1,41 +1,48 @@
-# Урок 1. Возможности Markdown
+# Module 1: Introduction to the Internet
 
-Markdown позволяет писать учебные материалы в простом текстовом формате, который затем красиво отображается на странице курса.
+## Vocabulary & Reading
 
-## Что можно использовать
+### The Internet
+The Internet is a global network that connects billions of computers, smartphones and devices all over the world. There are two main parts: 
+1. **The Infrastructure**: This is the hardware - the cables, satellites, routers and data centers that make the physical connections. 
+2. **The Services**: This is what we use every day – websites, apps, email, video calls and social media. 
 
-В уроках можно применять:
+To visit a website you need its address, called a URL (ex: www.example.com). You type this address into a browser (a program like Chrome or Safari) and it takes you there. How do you move online? You click on links to jump from one page to another. You use a search engine (like Google) to find information by typing keywords. To access private areas, you often need to log in with a username and password. The Internet is a powerful tool for learning, communication and work. It gives us access to endless information (data), allows us to download files to our devices and upload our own files to the cloud.
 
-- заголовки;
-- списки;
-- выделение текста;
-- цитаты;
-- таблицы;
-- блоки кода;
-- ссылки.
+### Operating System (OS) & Networks
+What happens when you turn on your computer or phone? How does it know what to do? How do you connect to a website that is stored on a computer far away? 
 
-**Жирный текст** удобно использовать для важных терминов.
+**The Operating System (OS): The Main Manager**
+The Operating System (OS) is the most important software on your device. It's like a manager or a translator between you, your applications and the hardware. 
+What does an OS do? 
+1. **Manages Hardware**: It controls the CPU, RAM, storage drives and other components. 
+2. **Runs Applications**: It allows you to open and use programs like your browser or word processor. 
+3. **Manages Files and Folders**: It creates a system of files and folders on your storage. 
+4. **Provides User Interface (UI)**: It gives you a way to interact with the device: a graphical interface (GUI) or a command line (CLI). 
 
-*Курсив* подходит для смысловых акцентов.
+**Common Operating Systems:** 
+*   For PCs: Windows, macOS, Linux. 
+*   For Smartphones: Android, iOS. 
+*   For Servers: Often Linux distributions. 
 
-> Цитата помогает визуально отделить важную мысль от основного текста.
+**Key Vocabulary:** 
+*   To boot (up) - to start up the computer and load the OS. 
+*   Desktop/Laptop - personal computers. 
+*   Server - a powerful computer that provides data or services. 
+*   Task Manager/Activity Monitor - an OS tool to see running applications. 
 
-## Пример таблицы
+**Computer Networks: Connecting Devices**
+A computer network is a group of devices connected together to share resources. Why do we need networks? Share Internet connection, files, printers, access centralized data, communicate. 
 
-| Элемент Markdown | Назначение |
-|---|---|
-| `# Заголовок` | Название раздела |
-| `- пункт` | Маркированный список |
-| `**текст**` | Жирное выделение |
-| `` `код` `` | Вставка кода |
+**Basic Network Types:** 
+1. **LAN (Local Area Network)**: small network in one location. 
+2. **WAN (Wide Area Network)**: large network over big area. The Internet is the biggest WAN. 
+*   **IP Address**: unique number for each device (ex: 192.168.1.5). 
+*   **Router**: connects LAN to Internet, routes data. 
+*   **Bandwidth**: maximum rate of data transfer. 
 
-## Пример кода
-
-```java
-public class Lesson {
-    private String title;
-    private String markdownContent;
-}
-```
-
-Markdown удобен для MVP, потому что контент можно быстро менять без сложного редактора.
+**Key Vocabulary:** 
+*   To connect to network/Wi-Fi 
+*   stable/unstable connection 
+*   password-protected network 
+*   reset router

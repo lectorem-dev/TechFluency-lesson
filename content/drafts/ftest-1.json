@@ -1,0 +1,60 @@
+{
+  "title": "Тест по Markdown",
+  "passScore": 4,
+  "questions": [
+    {
+      "text": "Для чего используется Markdown в уроках?",
+      "points": 2,
+      "answers": [
+        {
+          "text": "Для написания учебного материала в простом текстовом формате",
+          "correct": true
+        },
+        {
+          "text": "Для хранения паролей пользователей",
+          "correct": false
+        },
+        {
+          "text": "Для запуска базы данных",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "text": "Какой элемент Markdown используется для заголовка первого уровня?",
+      "points": 1,
+      "answers": [
+        {
+          "text": "# Заголовок",
+          "correct": true
+        },
+        {
+          "text": "- Заголовок",
+          "correct": false
+        },
+        {
+          "text": "`Заголовок`",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "text": "Что делает конструкция **текст**?",
+      "points": 2,
+      "answers": [
+        {
+          "text": "Выделяет текст жирным",
+          "correct": true
+        },
+        {
+          "text": "Создает таблицу",
+          "correct": false
+        },
+        {
+          "text": "Создает ссылку",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}

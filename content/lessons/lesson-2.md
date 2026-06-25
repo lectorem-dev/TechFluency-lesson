@@ -1,38 +1,12 @@
-# Урок 2. Как устроен учебный курс
+# Module 1: IT Jobs and Careers
 
-Курс в MVP-платформе состоит из последовательных уроков. Каждый урок содержит теоретический материал и короткий тест.
+## Vocabulary & Reading
 
-## Структура курса
+The IT industry offers a variety of career paths. 
 
-Типовая структура выглядит так:
+*   A **Software Developer** writes code for applications and maintains software systems. 
+*   A **Data Scientist** analyzes large datasets to find patterns and insights that drive business decisions. 
+*   A **DevOps Engineer** works on deployment automation and infrastructure management to ensure smooth software delivery. 
+*   A **Cybersecurity Specialist** protects computer systems and networks from digital attacks and implements security measures. 
+*   A **Network Administrator** manages an organization's computer networks, ensuring connectivity and performance.
 
-1. Пользователь открывает доступный урок.
-2. Читает markdown-материал.
-3. Проходит тест.
-4. Если набран проходной балл — открывается следующий урок.
-5. После последнего урока становится доступен сертификат.
-
-## Логика блокировки
-
-Следующий урок не должен быть доступен сразу. Это защищает последовательность обучения.
-
-Например:
-
-| Урок | Условие доступа |
-|---|---|
-| Урок 1 | Доступен сразу |
-| Урок 2 | Доступен после сдачи урока 1 |
-| Урок 3 | Доступен после сдачи урока 2 |
-
-## Зачем нужен прогресс
-
-Прогресс показывает студенту, сколько материала уже пройдено.
-
-Например:
-
-```text
-Пройдено 2 из 3 уроков
-Прогресс: 67%
-```
-
-Так пользователь понимает, где он находится в курсе и сколько осталось до завершения.
