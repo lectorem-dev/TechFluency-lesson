@@ -8,7 +8,7 @@ export function HomePage() {
           <span className="home-header__logo-wrap">
             <img src="/logo.png" alt="" className="home-header__logo" />
           </span>
-          Техноварк
+          Технопарк
         </Link>
         <Link aria-label="Перейти ко входу в профиль" className="home-header__profile-link" to="/login">
           <svg aria-hidden="true" className="home-header__profile-icon" viewBox="0 0 24 24">
@@ -57,11 +57,9 @@ export function HomePage() {
           </div>
           <div className="home-author__content">
             <h2 id="author-title">Автор курса</h2>
-            <h3>Иванов Алексей Сергеевич</h3>
+            <h3>Киршова Мария Владимировна</h3>
             <p>
-              Преподаватель английского языка для IT-направлений. Специализируется на
-              профессиональной лексике, чтении технической документации и подготовке студентов к
-              работе с англоязычными цифровыми продуктами.
+              Обучающаяся Технопарка 
             </p>
           </div>
         </section>
